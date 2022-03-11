@@ -1,10 +1,5 @@
-//Fake data
-const products = [
-    { id: 1, name: "Product A", },
-    { id: 2, name: "Product B", },
-    { id: 3, name: "Product C", },
-];
-
+import mongoose from "mongoose";
+const Product = mongoose.model('Product', {name: String})
 //List product
 export const list = (req, res) => {
     res.json(products);
@@ -15,7 +10,15 @@ export const get = (req, res) => {
     res.json(result);
 };
 //Create product
-export const create = (req, res) => {
+export const create = async (req, res) => {
+    try {
+        const product = await new Product(req.body).save();
+        res.json(product);
+    } catch (error) {
+        res.status(400).json({
+            message: "Create product failed"
+        })
+    }
     products.push(req.body);
     res.json(products);
 };
