@@ -2,10 +2,13 @@
 import express from 'express';
 import productRouter from './routes/product';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 const app = express();
+
 // middleware
 app.use(express.json());
+app.use(cors());
 
 // Routing
 app.use("/api", productRouter);
