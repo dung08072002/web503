@@ -1,9 +1,9 @@
 import Category from "../models/category";
-import slugify from "slugify";
 import Product from "../models/product";
+import slugify from "slugify";
 
 //List category
-export const list = async(req,res) => {
+export const list = async (req, res) => {
     try {
         const categories = await Category.find().exec();
         res.json(categories);
@@ -14,10 +14,10 @@ export const list = async(req,res) => {
     }
 };
 //Get products by category
-export const read = async (req,res) => {
+export const read = async (req, res) => {
     try {
-        const category = await Category.findOne({slug: req.params.slug}).exec();
-        const products = await Product.find({category: category}).populate('category').select('-category').exec();
+        const category = await Category.findOne({ slug: req.params.slug }).exec();
+        const products = await Product.find({ category: category }).populate('category').select('-category').exec();
         res.json({
             category, products
         });
@@ -28,7 +28,7 @@ export const read = async (req,res) => {
     }
 }
 //Create category
-export const create = async (req, res ) => {
+export const create = async (req, res) => {
     req.body.slug = slugify(req.body.name);
     try {
         const category = await new Category(req.body).save();
@@ -41,7 +41,7 @@ export const create = async (req, res ) => {
 };
 //Update category
 export const update = async (req, res) => {
-    const condition = {_id: req.params.id};
+    const condition = { slug: req.params.slug };
     const update = req.body;
     const optional = { new: true };
     try {
@@ -54,8 +54,8 @@ export const update = async (req, res) => {
     }
 };
 //Remove category
-export const remove = async (req,res) => {
-    const condition = {_id:req.params.id};
+export const remove = async (req, res) => {
+    const condition = { _id: req.params.id };
     try {
         const category = await Category.findByIdAndDelete(condition).exec();
         res.json(category);
