@@ -1,4 +1,5 @@
 import Product from "../models/product";
+import slugify from "slugify";
 
 //List product
 export const list = async (req, res) => {
@@ -13,7 +14,7 @@ export const list = async (req, res) => {
 };
 //Get a product
 export const get = async (req, res) => {
-    const condition = { _id: req.params.id }
+    const condition = { slug: req.params.slug }
     try {
         const products = await Product.findOne(condition).exec();
         res.json(products);
@@ -25,6 +26,7 @@ export const get = async (req, res) => {
 };
 //Create product
 export const create = async (req, res) => {
+    req.body.slug = slugify(req.body.name);
     try {
         const product = await new Product(req.body).save();
         res.json(product);
@@ -36,7 +38,7 @@ export const create = async (req, res) => {
 };
 //Update product
 export const update = async (req, res) => {
-    const condition = { _id: req.params.id };
+    const condition = { slug: req.params.slug };
     const update = req.body;
     const optional = { new: true };
     try {

@@ -1,15 +1,27 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 const productSchema = mongoose.Schema({
     name: {
         type: String,
         require: true,
-        minLength: 5
+    },
+    slug: {
+        type: String,
+        lowercase: true,
+        unique: true,
+        index: true
+    },
+    description: {
+        type: String,
+        require: true
     },
     price: {
         type: Number,
-        require: true,
-        minLength: 1
+        require: true
     },
-},{timestamps: true});
+    category: {
+        type: ObjectId,
+        ref: "Category"
+    }
+}, { timestamps: true });
 
 export default mongoose.model('Product', productSchema);
