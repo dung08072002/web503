@@ -17,8 +17,9 @@ app.use("/api", categoryRouter);
 
 // Connnect database
 mongoose.connect('mongodb://localhost:27017/we16306').then(() => console.log('Connect success database'))
+
 // Connect
-const PORT = 3001;
+const PORT = 8000;
 app.listen(PORT, () => {
   console.log(`Server is running port ${PORT}`);
 });
