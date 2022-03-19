@@ -12,7 +12,7 @@ export const list = async (req, res) => {
         })
     }
 };
-//Get a product
+//Get a product follow slug
 export const get = async (req, res) => {
     const condition = { slug: req.params.slug }
     try {

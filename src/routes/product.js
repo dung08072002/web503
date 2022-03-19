@@ -5,7 +5,7 @@ import { checkAuth } from '../middleware/checkAuth';
 const router = Router();
 
 router.get('/products', list); //Get all products
-router.get('/product/:slug', get); //Get a product
+router.get('/product/:slug', get); //Get a product follow slug key
 router.post('/product', checkAuth, create); //Create product
 router.put('/product/:slug', checkAuth, update); //Update product
 router.delete('/product/:id', checkAuth, remove); //Delete products
