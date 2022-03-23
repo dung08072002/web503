@@ -16,8 +16,8 @@ export const list = async (req, res) => {
 export const get = async (req, res) => {
     const condition = { slug: req.params.slug }
     try {
-        const products = await Product.findOne(condition).exec();
-        res.json(products);
+        const product = await Product.findOne(condition).exec();
+        res.json(product);
     } catch (error) {
         res.status(400).json({
             message: "Get a product failed"
