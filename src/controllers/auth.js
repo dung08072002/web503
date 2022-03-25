@@ -9,6 +9,7 @@ export const signup = async (req, res) => {
                 message: "Email exist, Please use other email"
             })
         }
+
         const user = await new User({name, email, password}).save();
         res.json({
             user: {
@@ -24,7 +25,11 @@ export const signup = async (req, res) => {
     }
 }
 
-export const signin = (req, res) => {
-
+export const signin = async (req, res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
 }
 

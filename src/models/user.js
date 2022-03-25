@@ -37,6 +37,7 @@ userSchema.methods = {
 userSchema.pre("save", async function save(next) {
     try {
         this.salt = uuid4v();
+        console.log(this.password);
         this.password = this.encryptPassword(this.password);
         return next();
     } catch (error) {
