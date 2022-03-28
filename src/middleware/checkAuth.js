@@ -11,10 +11,27 @@ exports.checkAuth = (req, res, next) => {
 
 export const requireSignin = expressJWT({
     secret: "shhhhh",
-    algorithms:['HS256'],
+    algorithms: ["HS256"],
     requestProperty: "auth"
 });
 
 export const isAuth = (req, res, next) => {
     console.log(req.auth);
+    console.log(req.profile);
+    const user = req.profile._id = req.auth._id;
+    if (!user) {
+        return res.status(402).json({
+            message: "You cannot access"
+        })
+    }
+    next();
+}
+
+export const isAdmin = (req, res, next) => {
+    if(req.profile.role==0){
+        return res.status(401).json({
+            message: "You are not Admin"
+        })
+    }
+    next();
 }

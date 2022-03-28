@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { v4 as uuid4v } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import { createHmac } from "crypto";
 
 const userSchema = mongoose.Schema({
@@ -20,6 +20,10 @@ const userSchema = mongoose.Schema({
         type: String,
         minLength: 8,
         require: true
+    },
+    role: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: true });
 
@@ -37,14 +41,13 @@ userSchema.methods = {
     }
 }
 
-userSchema.pre("save", async function save(next) {
+userSchema.pre("save", function(next) {
     try {
-        this.salt = uuid4v();
-        console.log(this.password);
+        this.salt = uuidv4();
         this.password = this.encryptPassword(this.password);
-        return next();
+        next();
     } catch (error) {
-        return next(error)
+        
     }
 })
 

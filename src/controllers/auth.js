@@ -2,15 +2,15 @@ import User from "../models/user";
 import jwt from "jsonwebtoken";
 
 export const signup = async (req, res) => {
+    const { name, email, password } = req.body;
     try {
-        const { name, email, password } = req.body;
-        const existUser = await User.findOne({email}).exec();
-        if(existUser){
-            res.json({
+        const existUser = await User.findOne({ email }).exec();
+        if (existUser) {
+            return res.status(400).json({
                 message: "Email exist, Please use other email"
             })
         }
-        const user = await new User({name, email, password}).save();
+        const user = await new User({ name, email, password }).save();
         res.json({
             user: {
                 _id: user._id,
@@ -26,22 +26,22 @@ export const signup = async (req, res) => {
 }
 
 export const signin = async (req, res) => {
-    const {email, password} = req.body;
-    const user = await User.findOne({email}).exec();
-    if(!user){
-        res.status(401).json({
+    const { email, password } = req.body;
+    const user = await User.findOne({ email }).exec();
+    if (!user) {
+        return res.status(400).json({
             message: "User does not exist"
         })
     };
-    if(!password){
-        res.status(401).json({
+    if (!user.authenticate(password)) {
+        return res.status(400).json({
             message: "Wrong password"
         })
-    }    
-    const token = jwt.sign({email}, "dungnv", {expiresIn: 60 * 60});
-    res.json({
+    }
+    const token = jwt.sign({ _id: user._id }, "dungnv", { expiresIn: 60 * 60 });
+    return res.json({
         token,
-        user:{
+        user: {
             _id: user._id,
             email: user.email,
             name: user.name
