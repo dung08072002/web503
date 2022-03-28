@@ -1,4 +1,5 @@
 import User from "../models/user";
+import jwt from "jsonwebtoken";
 
 export const signup = async (req, res) => {
     try {
@@ -9,7 +10,6 @@ export const signup = async (req, res) => {
                 message: "Email exist, Please use other email"
             })
         }
-
         const user = await new User({name, email, password}).save();
         res.json({
             user: {
@@ -26,10 +26,26 @@ export const signup = async (req, res) => {
 }
 
 export const signin = async (req, res) => {
-    try {
-        
-    } catch (error) {
-        
-    }
+    const {email, password} = req.body;
+    const user = await User.findOne({email}).exec();
+    if(!user){
+        res.status(401).json({
+            message: "User does not exist"
+        })
+    };
+    if(!password){
+        res.status(401).json({
+            message: "Wrong password"
+        })
+    }    
+    const token = jwt.sign({email}, "dungnv", {expiresIn: 60 * 60});
+    res.json({
+        token,
+        user:{
+            _id: user._id,
+            email: user.email,
+            name: user.name
+        }
+    })
 }
 

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { v4 as uuid4v } from "uuid";
 import { createHmac } from "crypto";
- 
+
 const userSchema = mongoose.Schema({
     name: {
         type: String,
@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema({
     salt: {
         type: String,
     },
-    password: {
+    password: { 
         type: String,
         minLength: 8,
         require: true
@@ -24,8 +24,11 @@ const userSchema = mongoose.Schema({
 }, { timestamps: true });
 
 userSchema.methods = {
+    authenticate(password) {
+        return this.password == this.encryptPassword(password);
+    },
     encryptPassword(password) {
-        if(!password) return;
+        if (!password) return;
         try {
             return createHmac('sha256', this.salt).update(password).digest('hex');
         } catch (error) {

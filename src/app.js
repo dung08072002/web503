@@ -18,7 +18,7 @@ app.use(morgan('tiny'))
 // Routing
 app.use("/api", productRouter);
 app.use("/api", categoryRouter);
-app.use("/api", authRouter)
+app.use("/api", authRouter);
 
 // Connnect database
 mongoose.connect('mongodb://localhost:27017/we16306').then(() => console.log('Connect success database'))
