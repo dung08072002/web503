@@ -19,7 +19,7 @@ export const signup = async (req, res) => {
             }
         });
     } catch (error) {
-        res.json(400).json({
+        res.status(400).json({
             message: "Can not create account"
         })
     }

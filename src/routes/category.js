@@ -7,7 +7,7 @@ const router = Router();
 router.get('/categories', list); //Get all
 router.get('/category/:slug', read); //Get products by category
 router.post('/category', checkAuth, create); //Create category
-router.put('/category/:slug', checkAuth, update); //Update category
+router.patch('/categories/:slug/edit', checkAuth, update); //Update category
 router.delete('/category/:id', checkAuth, remove); //Delete category
 
 export default router;

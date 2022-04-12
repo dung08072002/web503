@@ -42,10 +42,13 @@ export const create = async (req, res) => {
 //Update category
 export const update = async (req, res) => {
     const condition = { slug: req.params.slug };
+    req.body.slug = slugify(req.body.name);
     const update = req.body;
+    console.log(condition);
+    console.log(update);
     const optional = { new: true };
     try {
-        const category = await Category.findByIdAndUpdate(condition, update, optional).exec();
+        const category = await Category.findOneAndUpdate(condition, update, optional).exec();
         res.json(category);
     } catch (error) {
         res.status(400).json({
